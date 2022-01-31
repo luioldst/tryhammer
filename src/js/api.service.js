@@ -8,6 +8,7 @@ export const API_SERVICE =  {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': 'application/json',
                     'x-api-key': 'iIKO7pjo5B8AHvYICZMXQ1tmvbvBa3FY8wjCa6w8'
+                    
                 }
             });
         }

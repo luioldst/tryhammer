@@ -37,3 +37,182 @@
 .datepicker-header .datepicker-controls {
     padding: 14px 2px 15px;
 }
+
+#tryForm {
+    padding: 30px;
+    font-family: Abcdiatype, sans-serif;
+
+    a {
+        text-decoration: underline;
+        color: #000;
+    }
+
+    .form-group {
+        margin-bottom: 30px;
+    }
+
+    .form-group-check {
+        display: flex;
+        align-items: flex-start;
+
+        input {
+            max-width: 20px;
+        }
+    }
+
+    .form-group-check label {
+        font-family: Abcdiatype, sans-serif;
+        text-transform: none;
+        position: relative;
+        top: -3px;
+        font-size: 14px;
+        margin-left: 15px;
+        
+    }
+
+    label {
+        font-family: Sackersgothicstd, sans-serif;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+    input, select {
+        border: none;
+        border-bottom: 1px solid #bccece;
+        padding: 0 10px 5px;
+        font-size: 20px;
+        font-family: Abcdiatype, sans-serif;
+        width: 100%;
+
+        &:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        &:disabled {
+            opacity: 0.2;
+        }
+
+        &.error {
+            border-bottom-color: #a94442;
+            color: #a94442;
+            
+    
+            & + p {
+                color: #a94442;
+                font-size: 16px;
+                padding: 10px 0;
+            }
+        }
+    }
+
+    select {
+        padding-bottom: 3px;
+    }
+
+    .two-col{
+        display: flex;
+        align-items: flex-start;
+        margin-left: -15px;
+        margin-right: -15px;
+        overflow: hidden;
+        & > div {
+            width: 50%;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    }
+
+
+    @media screen and (max-width: 767px) {
+
+        .two-col {
+            display: block;
+        }
+
+
+        .two-col > div {
+            width: 100%;
+
+            label {
+                margin: 0 auto;
+                width: 100%;
+            }
+        }
+    }
+
+    .btn {
+        padding: 15px 15px;
+        font-family: Sackersgothicstd, sans-serif;
+        font-size: 14px;
+        transition: all 0.3s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        border-radius: 5px;
+        text-transform: uppercase;
+        text-decoration: none;
+
+        img {
+            max-width: 6px;
+            margin-right: 10px;
+        }
+    }
+
+    .btn.btn-blue {
+        background: #dbe9ec;
+
+        &:hover {
+            background: darken(#dbe9ec, 10%);
+        }
+    }
+
+    .booking-form {
+        max-width: 520px;
+        width: 100%;
+        padding: 25px;
+        border-radius: 10px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+
+        & > div.text {
+            text-align: left;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 25px;
+            margin-bottom: 25px;
+        }
+
+        img.hero {
+            max-width: 85px;
+            margin-top: 50px;
+            margin-bottom: 40px;
+        }
+
+        p.success-intro {
+            font-size: 30px;
+            line-height: 30px;
+            font-family: "Latinotype jazmin alt",sans-serif;
+        }
+
+        
+    }
+
+    .loader-wrapper {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .loader {
+        max-width: 15px;
+        margin-right: 10px;
+    }
+
+    
+}
