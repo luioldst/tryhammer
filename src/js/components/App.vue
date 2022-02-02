@@ -26,7 +26,8 @@
             </div>
             <div class="form-group">
                 <label>Your Zip Code *</label>
-                <input maxlength="5" :class="{ 'error' : error['zip'] }" @input="debounceZipCode" type="number" v-model="zip">
+                <input
+                :class="{ 'error' : error['zip'] }" @input="debounceZipCode" type="number" maxlength="99999" v-model="zip">
                 <p class="error" v-if="error['zip']">{{ error['zip'] }}</p>
             </div>
 
@@ -34,7 +35,7 @@
                 <div>
                     <div class="form-group">
                         <label>Select Date *</label>
-                        <input :disabled="fetching || !zip" :class="{ 'error' : error['date'] }" id="datepicker" type="text">
+                        <input :class="{ 'error' : error['date'] }" id="datepicker" type="text">
                         <p class="error" v-if="error['date']">{{ error['date'] }}</p>
                     </div>
                 </div>
@@ -134,16 +135,17 @@ export default {
 
     mounted () {
         this.initDatepicker();
+    },
 
-        // if(localStorage.getItem('response')) {
-        //     this.success = true;
-        //     this.appointment_response = JSON.parse(localStorage.getItem('response'));
-        // }
+    watch: {
+        list (value) {
+            if (!value.length) {
+                this.fetching = true;
+            }
+        }
     },
 
     methods: {
-
-        
 
         validate (event) {
             event.preventDefault();
@@ -188,17 +190,27 @@ export default {
 
             elem.addEventListener('changeDate', event => {
                 this.date = moment(event.detail.date).format('DD-MMM-yyyy');
-                this.getList();
+
+                if (this.zip.length < 5) {
+                    this.setError('zip', 'Please enter a valid zip code')
+                } else {
+                    this.fetching = true;
+                    this.getList();
+                }
+
+                
+                
             });
             
         },
 
         debounceZipCode () {
-            if (this.zip.length) {
-                this.zip_debounce && clearTimeout(this.zip_debounce)
-                this.zip_debounce = setTimeout(() => {
+            if (this.zip.length > 5) this.zip = this.zip.slice(0, 5);
+            if (this.zip.length == 5) {
+                // this.zip_debounce && clearTimeout(this.zip_debounce)
+                // this.zip_debounce = setTimeout(() => {
                     this.getTimezone();
-                }, 1000)
+                // }, 1000)
             } else {
                 this.setError('zip', 'Please enter a valid US zip code');
             }
@@ -211,7 +223,8 @@ export default {
         },
 
         getList () {
-            this.fetching = true;
+            // this.fetching = true;
+            this.list = [];
             this.setError('time_selected', '');
             this.$http.get(`/booking/availability/list?accessToken=${this.token}&selected_date=${this.date}%2010:00:00&user_timezone=${this.timezone.timezone}&service_id=${this.service.id}`)
             .then( response => {
@@ -220,7 +233,10 @@ export default {
                 list.splice(listCount, 1);
                 this.list = list;
                 this.fetching = false;
+
+                
             }).catch( error => {
+                this.fetching = false;
                 this.setError('time_selected', 'We have encountered an error, please try again later.');
             } );
         },
@@ -230,12 +246,11 @@ export default {
             this.$http.get(`/timezone?zipcode=${this.zip}`)
                 .then ( response => {
                     this.timezone = response.data;
+                    this.fetching = true;
                     this.getList();
                 }).catch( errorResponse => {
-                    
                     if(errorResponse['response']) {
-                        errorResponse.response.status == 404 && this.setError('zip', 'No schedule found in your area');
-                        
+                        errorResponse.response.status == 404 && this.setError('zip', 'No schedule found in your area'); 
                     }
                 });
         },
