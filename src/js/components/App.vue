@@ -1,5 +1,8 @@
 <template>
     <form id="tryForm">
+        <div class="loader-wrapper " v-if="submitting">
+            <img src="https://uploads-ssl.webflow.com/6172279814cf5440b9aec966/61ee7ec5802e1c11dc78e81b_loader.gif">
+        </div>
         <div v-if="!success">
             <div class="form-group">
                 <label>First Name *</label>
@@ -23,8 +26,8 @@
             </div>
             <div class="form-group">
                 <label>Your Zip Code *</label>
-                <input :class="{ 'error' : error['phone_number'] }" @input="debounceZipCode" type="text" v-model="zip">
-                <p class="error" v-if="error['phone_number']">{{ error['phone_number'] }}</p>
+                <input :class="{ 'error' : error['zip'] }" @input="debounceZipCode" type="text" v-model="zip">
+                <p class="error" v-if="error['zip']">{{ error['zip'] }}</p>
             </div>
 
             <div class="two-col">
@@ -45,7 +48,7 @@
                             </option>
                         </select>
                         <p class="error" v-if="error['time_selected']">{{ error['time_selected'] }}</p>
-                        <p v-if="fetching" class="loader-wrapper"><em>
+                        <p v-if="fetching" class="loader-wrapper-text"><em>
                             <img class="loader" src="https://uploads-ssl.webflow.com/6172279814cf5440b9aec966/61ee7ec5802e1c11dc78e81b_loader.gif">
                             Listing available schedule based on timezone and date
                             </em>
@@ -62,8 +65,11 @@
             </div>
             
             
-            <button @click="validate" class="btn btn-blue" type="submit">
+            <button @click="validate" v-if="!submitting" class="btn btn-blue" type="submit">
                 <img src="https://uploads-ssl.webflow.com/6172279814cf5440b9aec966/6183bd85add1c1207f2b7dcb_icon-arrow-right.svg">Submit
+            </button>
+            <button class="btn btn-blue" v-if="submitting">
+                <img src="https://uploads-ssl.webflow.com/6172279814cf5440b9aec966/6183bd85add1c1207f2b7dcb_icon-arrow-right.svg">Sending request....
             </button>
             <p class="error" v-if="error['general']">{{ error['general'] }}</p>
         </div>
@@ -112,7 +118,7 @@ export default {
             list: [],
             token: '',
             fetching: false,
-            loading: false,
+            submitting: false,
             success: false,
             appointment_response: {
                 start_time: '',
@@ -138,6 +144,7 @@ export default {
 
         validate (event) {
             event.preventDefault();
+            
 
             this.error = {};
 
@@ -148,15 +155,17 @@ export default {
         },
 
         createAppointment() {
-            this.loading = true;
+            this.submitting = true;
             this.$http.post(`/booking/appointment?accessToken=${this.token}`, this.params)
             .then( response => {
                 this.appointment_response = response.data.response.returnvalue;
                 localStorage.setItem('response', JSON.stringify(this.appointment_response));
                 this.success = true;
+                this.submitting = false;
                 
             }).catch( error => {
-                this.success = false
+                this.success = false;
+                this.submitting = false;
                 this.error['general'] = 'There was an error in your request, please reload the page then try again.'
             } );
         },
@@ -182,11 +191,11 @@ export default {
         },
 
         debounceZipCode () {
-            if (this.zip.length > 4 || this.zip.length) {
+            if (this.zip.length) {
                 this.zip_debounce && clearTimeout(this.zip_debounce)
                 this.zip_debounce = setTimeout(() => {
                     this.getTimezone();
-                }, 100)
+                }, 1000)
             } else {
                 this.setError('zip', 'Please enter a valid US zip code');
             }
@@ -200,6 +209,7 @@ export default {
 
         getList () {
             this.fetching = true;
+            this.setError('time_selected', '');
             this.$http.get(`/booking/availability/list?accessToken=${this.token}&selected_date=${this.date}%2010:00:00&user_timezone=${this.timezone.timezone}&service_id=${this.service.id}`)
             .then( response => {
                 let listCount = response.data.length - 1;
@@ -208,6 +218,7 @@ export default {
                 this.list = list;
                 this.fetching = false;
             }).catch( error => {
+                this.setError('time_selected', 'We have encountered an error, please try again later.');
             } );
         },
 
@@ -218,8 +229,10 @@ export default {
                     this.timezone = response.data;
                     this.getList();
                 }).catch( errorResponse => {
+                    
                     if(errorResponse['response']) {
-                        errorResponse.response.status == 404 && this.setError('zip', errorResponse.response.data.status);
+                        errorResponse.response.status == 404 && this.setError('zip', 'No schedule found in your area');
+                        
                     }
                 });
         },
