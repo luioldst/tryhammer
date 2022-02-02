@@ -186,7 +186,7 @@ export default {
                 this.zip_debounce && clearTimeout(this.zip_debounce)
                 this.zip_debounce = setTimeout(() => {
                     this.getTimezone();
-                }, 1000)
+                }, 100)
             } else {
                 this.setError('zip', 'Please enter a valid US zip code');
             }
