@@ -21,12 +21,12 @@
             </div>
             <div class="form-group">
                 <label>Phone Number *</label>
-                <input :class="{ 'error' : error['phone_number'] }" placeholder="(123) 321-3213" type="tel" v-model="phone_number">
+                <input @keyup="formatPhoneNumber" :class="{ 'error' : error['phone_number'] }" placeholder="(123) 321-3213" type="tel" v-model="phone_number">
                 <p class="error" v-if="error['phone_number']">{{ error['phone_number'] }}</p>
             </div>
             <div class="form-group">
                 <label>Your Zip Code *</label>
-                <input :class="{ 'error' : error['zip'] }" @input="debounceZipCode" type="text" v-model="zip">
+                <input maxlength="5" :class="{ 'error' : error['zip'] }" @input="debounceZipCode" type="number" v-model="zip">
                 <p class="error" v-if="error['zip']">{{ error['zip'] }}</p>
             </div>
 
@@ -82,6 +82,8 @@
                 :response="appointment_response"></success>
         </div>
 
+        {{ parse_phone_number }}
+
     </form>
 </template>
 
@@ -89,6 +91,7 @@
 import Success from './Success.vue';
 import { Datepicker } from 'vanillajs-datepicker';
 import { API_SERVICE }  from './../api.service';
+import { PHONE_NUMBER_MIXIN }  from './../phone_number.mixin';
 import moment, { duration } from 'moment';
 import _ from 'lodash';
 
@@ -99,7 +102,7 @@ export default {
         Success
     },
 
-    mixins: [ API_SERVICE ],
+    mixins: [ API_SERVICE, PHONE_NUMBER_MIXIN ],
 
     data () {
         return {
@@ -141,6 +144,8 @@ export default {
     },
 
     methods: {
+
+        
 
         validate (event) {
             event.preventDefault();
@@ -291,6 +296,10 @@ export default {
             return reordered;
         },
 
+        parsed_phone_number () {
+            return this.phone_number.replace(/\D/g,'');;
+        },
+
         params () {
 
             let additional_fields = {
@@ -302,7 +311,7 @@ export default {
             let customer_details = {
                 name: `${this.first_name} ${this.last_name}`,
                 email: this.email,
-                phone_number: this.phone_number,
+                phone_number: this.parsed_phone_number,
             }
 
 
