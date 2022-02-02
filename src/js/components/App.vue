@@ -6,28 +6,32 @@
         <div v-if="!success">
             <div class="form-group">
                 <label>First Name *</label>
-                <input :class="{ 'error' : error['first_name'] }" type="text" v-model="first_name">
+                <input :placeholder="ismobile ? 'First Name' : ''" :class="{ 'error' : error['first_name'] }" type="text" v-model="first_name">
                 <p class="error" v-if="error['first_name']">{{ error['first_name'] }}</p>
             </div>
             <div class="form-group">
                 <label>Last Name *</label>
-                <input :class="{ 'error' : error['last_name'] }" type="text" v-model="last_name">
+                <input :placeholder="ismobile ? 'Last Name' : ''" :class="{ 'error' : error['last_name'] }" type="text" v-model="last_name">
                 <p class="error" v-if="error['last_name']">{{ error['last_name'] }}</p>
             </div>
             <div class="form-group">
                 <label>Email *</label>
-                <input :class="{ 'error' : error['email'] }" type="email" v-model="email">
+                <input :placeholder="ismobile ? 'Email address' : ''" :class="{ 'error' : error['email'] }" type="email" v-model="email">
                 <p class="error" v-if="error['email']">{{ error['email'] }}</p>
             </div>
             <div class="form-group">
                 <label>Phone Number *</label>
-                <input @keyup="formatPhoneNumber" :class="{ 'error' : error['phone_number'] }" placeholder="(123) 321-3213" type="tel" v-model="phone_number">
+                <input @keyup="formatPhoneNumber($event)" :class="{ 'error' : error['phone_number'] }" 
+                :placeholder="ismobile ? 'Phone Number' : '(123) 321-3213'" type="tel" v-model="phone_number">
                 <p class="error" v-if="error['phone_number']">{{ error['phone_number'] }}</p>
             </div>
             <div class="form-group">
                 <label>Your Zip Code *</label>
                 <input
-                :class="{ 'error' : error['zip'] }" @input="debounceZipCode" type="number" maxlength="99999" v-model="zip">
+                :class="{ 'error' : error['zip'] }" @input="debounceZipCode" type="number" maxlength="99999" 
+                v-model="zip"
+                :placeholder="ismobile ? 'Your Zip Code' : ''"
+                >
                 <p class="error" v-if="error['zip']">{{ error['zip'] }}</p>
             </div>
 
@@ -35,7 +39,8 @@
                 <div>
                     <div class="form-group">
                         <label>Select Date *</label>
-                        <input :class="{ 'error' : error['date'] }" id="datepicker" type="text">
+                        <input :class="{ 'error' : error['date'] }" id="datepicker" type="text"
+                        :placeholder="ismobile ? 'Date' : ''">
                         <p class="error" v-if="error['date']">{{ error['date'] }}</p>
                     </div>
                 </div>
@@ -43,7 +48,8 @@
                 <div>
                     <div class="form-group">
                         <label>Select Time</label>
-                        <select :class="{ 'error' : error['time_selected'] }" :disabled="fetching || !zip" v-model="time_selected">
+                        <select :placeholder="ismobile ? 'Time' : ''" :class="{ 'error' : error['time_selected'] }" :disabled="fetching || !zip" v-model="time_selected">
+                            <option value="Time">Time</option>
                             <option v-for="(time, key) in reordered_time" :key="key" :value="time">
                                 {{ key }}
                             </option>
@@ -113,7 +119,7 @@ export default {
             phone_number: '',
             zip: '',
             date: '',
-            time_selected: [],
+            time_selected: 'Time',
             zip_debounce: '',
             timezone: {},
             error: {},
@@ -184,9 +190,9 @@ export default {
                 format: 'M d yyyy'
             });
 
-            datepicker.setDate(new Date());
+            !this.isMobile && datepicker.setDate(new Date());
 
-            this.date = moment().format('DD-MMM-yyyy');
+            // this.date = moment().format('DD-MMM-yyyy');
 
             elem.addEventListener('changeDate', event => {
                 this.date = moment(event.detail.date).format('DD-MMM-yyyy');
@@ -225,6 +231,7 @@ export default {
         getList () {
             // this.fetching = true;
             this.list = [];
+            this.time_selected = [];
             this.setError('time_selected', '');
             this.$http.get(`/booking/availability/list?accessToken=${this.token}&selected_date=${this.date}%2010:00:00&user_timezone=${this.timezone.timezone}&service_id=${this.service.id}`)
             .then( response => {
@@ -372,6 +379,10 @@ export default {
             });
 
             return valid;
+        },
+
+        ismobile () {
+            return window.innerWidth < 767;
         }
     }
 }

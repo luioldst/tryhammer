@@ -1,24 +1,37 @@
 export const PHONE_NUMBER_MIXIN = {
     methods: {
 
-        formatPhoneNumber () {
-            // if (!this.phoneNumber) return value;
-
-            let value = this.phone_number;
-        
-            const phoneNumber = value.replace(/[^\d]/g, "");
-            const phoneNumberLength = phoneNumber.length;
-        
-            if (phoneNumberLength < 4) return phoneNumber;
-        
-            if (phoneNumberLength < 7) {
-                return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+        characterIsAllowed (event) {
+            event = (event) ? event : window.event;
+            var charCode = (event.which) ? event.which : event.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
             }
+            return true;
+        },
+
+        formatPhoneNumber (event) {
+
+            // if (!this.phoneNumber) return value;
+                let value = this.phone_number.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+
+                this.phone_number = value;
         
-            this.phone_number = `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
-                3,
-                6
-            )}-${phoneNumber.slice(6, 10)}`;
+                const phoneNumber = value.replace(/[^\d]/g, "");
+                const phoneNumberLength = phoneNumber.length;
+            
+                if (phoneNumberLength < 4) return phoneNumber;
+            
+                if (phoneNumberLength < 7) {
+                    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+                }
+            
+                this.phone_number = `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
+                    3,
+                    6
+                )}-${phoneNumber.slice(6, 10)}`;
+
+            
 
             
         },

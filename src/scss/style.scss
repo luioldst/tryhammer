@@ -209,6 +209,16 @@
         
     }
 
+    @media screen and (max-width: 767px) {
+        label {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+    }
+
     .loader-wrapper-text {
         display: flex;
         align-items: center;
