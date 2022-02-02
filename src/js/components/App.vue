@@ -82,8 +82,6 @@
                 :response="appointment_response"></success>
         </div>
 
-        {{ parse_phone_number }}
-
     </form>
 </template>
 
