@@ -192,7 +192,7 @@ export default {
 
             !this.isMobile && datepicker.setDate(new Date());
 
-            // this.date = moment().format('DD-MMM-yyyy');
+            this.date = moment().format('DD-MMM-yyyy');
 
             elem.addEventListener('changeDate', event => {
                 this.date = moment(event.detail.date).format('DD-MMM-yyyy');
