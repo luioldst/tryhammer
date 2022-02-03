@@ -35,12 +35,12 @@
                 <p class="error" v-if="error['zip']">{{ error['zip'] }}</p>
             </div>
 
-            <div class="two-col">
+            <div class="custom-column min-two-col">
                 <div>
                     <div class="form-group">
                         <label>Select Date *</label>
                         <input :class="{ 'error' : error['date'] }" id="datepicker" type="text"
-                        :placeholder="ismobile ? 'Date' : ''">
+                        :placeholder="ismobile ? 'Date' : ''" class="input-date">
                         <p class="error" v-if="error['date']">{{ error['date'] }}</p>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                 <div>
                     <div class="form-group">
                         <label>Select Time</label>
-                        <select :placeholder="ismobile ? 'Time' : ''" :class="{ 'error' : error['time_selected'] }" :disabled="fetching || !zip" v-model="time_selected">
+                        <select class="input-time" :placeholder="ismobile ? 'Time' : ''" :class="{ 'error' : error['time_selected'] }" :disabled="fetching || !zip" v-model="time_selected">
                             <option value="Time">Time</option>
                             <option v-for="(time, key) in reordered_time" :key="key" :value="time">
                                 {{ key }}
