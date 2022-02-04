@@ -67,7 +67,7 @@
             <div class="form-group form-group-check">
                 <input type="checkbox" id="terms">
                 <label for="terms">
-                    I agree to the Terms and Conditions, Privacy Policy and Telehealth Consent by thrivelab.
+                    I agree to the <a target="_blank" href="https://www.thrivelab.com/terms">Terms and Conditions</a>, <a target="_blank" href="https://www.thrivelab.com/privacy-policy">Privacy Policy</a> and <a target="_blank" href="https://www.thrivelab.com/telehealth">Telehealth Consent by thrivelab</a>.
                 </label>
             </div>
             

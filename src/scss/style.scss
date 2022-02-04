@@ -84,21 +84,25 @@
         top: -3px;
         font-size: 14px;
         margin-left: 15px;
+        font-weight: normal;
         
     }
 
     label {
         font-family: Sackersgothicstd, sans-serif;
         text-transform: uppercase;
-        font-size: 12px;
+        font-size: 11px;
+        letter-spacing: 0;
     }
     input, select {
         border: none;
         border-bottom: 1px solid #bccece;
         padding: 0 10px 5px;
-        font-size: 20px;
+        font-size: 18px;
         font-family: Abcdiatype, sans-serif;
         width: 100%;
+        -webkit-appearance: none;
+        border-radius: 0;
 
         &:focus {
             outline: none;
@@ -122,6 +126,8 @@
         }
     }
 
+
+
     select {
         padding-bottom: 3px;
     }
@@ -140,7 +146,17 @@
     }
 
 
+
+
     @media screen and (max-width: 767px) {
+
+        padding-left: 15px;
+        padding-right: 15px;
+
+        input, select {
+            font-size: 16px;
+        }
+
 
         .two-col {
             display: block;
@@ -241,6 +257,7 @@
 
         .form-group-check label {
             display: block;
+            font-weight: normal;
         }
 
         .form-group {
