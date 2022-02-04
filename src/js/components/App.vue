@@ -48,7 +48,7 @@
                 <div>
                     <div class="form-group">
                         <label>Select Time</label>
-                        <select class="input-time" :placeholder="ismobile ? 'Time' : ''" :class="{ 'error' : error['time_selected'] }" :disabled="fetching || !zip" v-model="time_selected">
+                        <select class="input-time" :placeholder="ismobile ? 'Time' : ''" :class="{ 'error' : error['time_selected'] }" :disabled="fetching" v-model="time_selected">
                             <option value="Time">Time</option>
                             <option v-for="(time, key) in reordered_time" :key="key" :value="time">
                                 {{ key }}
