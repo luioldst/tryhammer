@@ -343,7 +343,8 @@ export default {
                 staff_id: this.pickedStaff.id,
                 timezone: this.timezone.timezone,
                 customer_details: JSON.stringify(customer_details),
-                additional_fields: JSON.stringify(additional_fields)
+                additional_fields: JSON.stringify(additional_fields),
+                url: `?source=${localStorage.getItem('first_visit_url')}&ref=${encodeURI(document.referrer)}`
             }
         },
 
