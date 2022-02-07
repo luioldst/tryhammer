@@ -69,8 +69,10 @@
     }
 
     .form-group-check {
-        display: flex;
-        align-items: flex-start;
+         div {
+             display: flex;
+            align-items: flex-start;
+         }
 
         input {
             max-width: 20px;

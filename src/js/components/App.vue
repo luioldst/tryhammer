@@ -65,10 +65,14 @@
             </div>  
 
             <div class="form-group form-group-check">
-                <input type="checkbox" id="terms">
-                <label for="terms">
-                    I agree to the <a target="_blank" href="https://www.thrivelab.com/terms">Terms and Conditions</a>, <a target="_blank" href="https://www.thrivelab.com/privacy-policy">Privacy Policy</a> and <a target="_blank" href="/telehealth">Telehealth Consent by thrivelab</a>.
-                </label>
+                <div>
+                    <input type="checkbox" v-model="terms" id="terms">
+                    <label for="terms">
+                        I agree to the <a target="_blank" href="https://www.thrivelab.com/terms">Terms and Conditions</a>, <a target="_blank" href="https://www.thrivelab.com/privacy-policy">Privacy Policy</a> and <a target="_blank" href="/telehealth">Telehealth Consent by thrivelab</a>.
+                    </label>
+                </div>
+
+                <p style="color: #a94442;" class="error" v-if="error['terms']">{{ error['terms'] }}</p>
             </div>
             
             
@@ -119,6 +123,7 @@ export default {
             last_name: '',
             email: '',
             phone_number: '',
+            terms: false,
             zip: '',
             date: '',
             time_selected: 'Time',
@@ -382,6 +387,11 @@ export default {
                     valid = false;
                 }
             });
+
+            if (!this.terms) {
+                valid = false;
+                this.setError('terms', 'You must agree with the terms and conditions');
+            }
 
             return valid;
         },
