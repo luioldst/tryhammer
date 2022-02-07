@@ -81,6 +81,8 @@
             <p class="error" v-if="error['general']">{{ error['general'] }}</p>
         </div>
 
+        
+
         <div v-if="success">
             <success :name="`${first_name} ${last_name}`"
                 :timezone="timezone"

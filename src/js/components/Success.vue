@@ -1,5 +1,9 @@
 <template>
     <div id="tryForm" class="booking-form">
+        <div class='pyro'>
+            <div class='before'></div>
+            <div class='after'></div>
+        </div>
         <img class="hero" src="https://uploads-ssl.webflow.com/6172279814cf5440b9aec966/61f28fccbb3352c540f8c115_Success_Icon.7fa88b2e.svg">
         <div class="text">
             <p class="success-intro">You're all set {{ name }}!</p>
