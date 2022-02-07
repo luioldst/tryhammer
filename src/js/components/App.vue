@@ -66,7 +66,7 @@
 
             <div class="form-group form-group-check">
                 <div>
-                    <input type="checkbox" v-model="terms" id="terms">
+                    <input type="checkbox" :value="false" v-model="terms" id="terms">
                     <label for="terms">
                         I agree to the <a target="_blank" href="https://www.thrivelab.com/terms">Terms and Conditions</a>, <a target="_blank" href="https://www.thrivelab.com/privacy-policy">Privacy Policy</a> and <a target="_blank" href="/telehealth">Telehealth Consent by thrivelab</a>.
                     </label>
