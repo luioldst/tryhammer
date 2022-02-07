@@ -173,6 +173,8 @@ export default {
                 localStorage.setItem('response', JSON.stringify(this.appointment_response));
                 this.success = true;
                 this.submitting = false;
+
+                document.getElementById('consultationTitle').style.display = 'none'
                 
             }).catch( error => {
                 this.success = false;
