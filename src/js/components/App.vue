@@ -76,9 +76,7 @@
             </div>
 
             <p class="note" style="margin-top: 15px;">
-            
                 Please note: email addresses are immediately processed once entered.
-                
             </p> 
             
             
