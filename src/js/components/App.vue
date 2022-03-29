@@ -74,6 +74,12 @@
 
                 <p style="color: #a94442;" class="error" v-if="error['terms']">{{ error['terms'] }}</p>
             </div>
+
+            <p class="note" style="margin-top: 15px;">
+            
+                Please note: email addresses are immediately processed once entered.
+                
+            </p> 
             
             
             <button @click="validate" v-if="!submitting" class="btn btn-blue" type="submit">
